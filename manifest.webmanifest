@@ -1,0 +1,9 @@
+{
+  "name": "YKS Takip Defterim",
+  "short_name": "YKS Takip",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#f4f6fb",
+  "theme_color": "#172554",
+  "icons": []
+}

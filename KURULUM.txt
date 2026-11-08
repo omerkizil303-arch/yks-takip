@@ -1,0 +1,19 @@
+YKS TAKİP DEFTERİM
+
+İçerik:
+- TYT / AYT / Genel çalışma kaydı
+- Dersler, kullanıcının eklediği konular
+- Tarih, dakika, durum, doğru, yanlış ve not
+- Takvim ve geçmiş kayıtlar
+- Haftalık 30 saat hedefi, toplam süre ve net
+- JSON yedek indir / yedek yükle
+- İnternet üzerinden yayınlandığında ana ekrana eklenebilen PWA
+
+KURULUM:
+1. ZIP'i açın.
+2. Dosyaları HTTPS destekleyen bir statik web barındırma alanına yükleyin (ör. GitHub Pages veya Netlify).
+3. Oluşan web adresini Android Chrome'da açın.
+4. Chrome menüsü > Ana ekrana ekle / Uygulamayı yükle.
+
+ÖNEMLİ:
+Kayıtlar otomatik olarak aynı cihazdaki tarayıcı depolamasına (localStorage) yazılır. Tarayıcı verileri silinirse veya başka telefona geçilirse kayıtlar kendiliğinden taşınmaz. Raporlar bölümünden düzenli olarak "Yedek indir" kullanın.

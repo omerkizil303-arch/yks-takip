@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#172554"><title>YKS Takip Defterim</title>
+<link rel="manifest" href="manifest.webmanifest">
+<style>
+:root{--navy:#172554;--blue:#2563eb;--bg:#f4f6fb;--card:#fff;--muted:#64748b;--line:#e2e8f0}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:#172033;font:15px system-ui,-apple-system,Segoe UI,sans-serif}
+header{background:var(--navy);color:white;padding:22px 18px 18px}header h1{margin:0;font-size:23px}header p{margin:5px 0 0;color:#cbd5e1;font-size:13px}
+nav{display:flex;gap:8px;padding:12px;overflow:auto;background:white;position:sticky;top:0;z-index:3;border-bottom:1px solid var(--line)}
+nav button,.btn{border:0;border-radius:10px;padding:10px 13px;background:#eaf0ff;color:#1e40af;font-weight:650;white-space:nowrap}
+nav button.active,.primary{background:var(--blue);color:white}
+main{max-width:900px;margin:auto;padding:14px}.panel{display:none}.panel.active{display:block}
+.card{background:white;border:1px solid var(--line);border-radius:15px;padding:15px;margin:0 0 13px;box-shadow:0 2px 8px #0f172a08}
+h2{font-size:18px;margin:0 0 12px}h3{font-size:15px;margin:0 0 8px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.stat{background:#f8fafc;border-radius:12px;padding:12px}.stat strong{display:block;font-size:22px;color:#1d4ed8}.stat span{font-size:12px;color:var(--muted)}
+label{display:block;font-size:12px;color:#475569;margin:9px 0 5px}input,select,textarea{width:100%;padding:11px;border:1px solid #cbd5e1;border-radius:9px;background:white;font:inherit;color:#172033}textarea{min-height:65px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:9px}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.btn{cursor:pointer}.danger{background:#fee2e2;color:#991b1b}.muted{color:var(--muted);font-size:12px}
+.item{border-top:1px solid var(--line);padding:11px 0;display:flex;justify-content:space-between;gap:10px}.item:first-child{border:0}.item small{display:block;color:var(--muted);margin-top:3px}.tag{font-size:11px;border-radius:20px;padding:4px 8px;background:#eff6ff;color:#1d4ed8;white-space:nowrap}
+.subjects{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:12px}.subjects button{border:1px solid var(--line);background:white;border-radius:20px;padding:8px 11px}.subjects button.active{background:#dbeafe;border-color:#60a5fa;color:#1d4ed8}
+.progress{height:8px;background:#e2e8f0;border-radius:9px;overflow:hidden}.progress i{display:block;height:100%;background:#2563eb}
+table{width:100%;border-collapse:collapse;font-size:13px}td,th{text-align:left;padding:8px;border-bottom:1px solid var(--line)}
+@media(min-width:700px){main{padding:22px}.grid{grid-template-columns:repeat(4,1fr)}}
+</style></head>
+<body>
+<header><h1>YKS Takip Defterim</h1><p>Çalışmalarını kaydet, ilerlemeni gör, kaldığın yerden devam et.</p></header>
+<nav id="tabs"><button class="active" data-tab="home">Genel Bakış</button><button data-tab="study">Çalışma Ekle</button><button data-tab="topics">Ders & Konular</button><button data-tab="calendar">Takvim</button><button data-tab="reports">Raporlar</button></nav>
+<main>
+<section id="home" class="panel active">
+ <div class="card"><h2>Genel Bakış</h2><div class="grid">
+  <div class="stat"><strong id="totalHours">0 sa</strong><span>Toplam çalışma</span></div><div class="stat"><strong id="weekHours">0 sa</strong><span>Bu hafta</span></div>
+  <div class="stat"><strong id="totalNet">0</strong><span>Toplam net</span></div><div class="stat"><strong id="doneTopics">0</strong><span>Biten konu</span></div>
+ </div><p class="muted">Haftalık hedef: 30 saat</p><div class="progress"><i id="goalBar" style="width:0%"></i></div><p class="muted" id="goalText">0 / 30 saat</p></div>
+ <div class="card"><h2>Son çalışmalar</h2><div id="recent"></div></div>
+</section>
+<section id="study" class="panel">
+ <div class="card"><h2>Çalışma kaydı ekle</h2>
+ <form id="studyForm">
+ <div class="row"><div><label>Tarih</label><input type="date" id="date" required></div><div><label>Sınav türü</label><select id="exam"><option>TYT</option><option>AYT</option><option>Genel</option></select></div></div>
+ <label>Ders</label><select id="subject"></select>
+ <label>Konu / çalışma türü</label><input id="topic" list="topicOptions" placeholder="Örn. Problemler, Paragraf" required><datalist id="topicOptions"></datalist>
+ <div class="row"><div><label>Süre (dakika)</label><input type="number" id="minutes" min="0" value="40"></div><div><label>Durum</label><select id="status"><option>Devam ediyor</option><option>Bitti</option><option>Tekrar</option></select></div></div>
+ <div class="row"><div><label>Doğru</label><input type="number" id="correct" min="0" value="0"></div><div><label>Yanlış</label><input type="number" id="wrong" min="0" value="0"></div></div>
+ <label>Not</label><textarea id="note" placeholder="Neyi öğrendin, neyi tekrar edeceksin?"></textarea>
+ <div class="actions"><button class="btn primary" type="submit">Kaydı sakla</button><button class="btn" type="reset">Temizle</button></div>
+ </form></div>
+</section>
+<section id="topics" class="panel">
+ <div class="card"><h2>Dersler ve konular</h2><p class="muted">Konuları kendin ekleyebilirsin. Her dersin ilerlemesi otomatik hesaplanır.</p>
+ <div class="subjects" id="subjectButtons"></div><div id="subjectDetail"></div>
+ <label>Yeni konu ekle</label><div class="row"><input id="newTopic" placeholder="Konu adı"><button class="btn primary" id="addTopic">Konu ekle</button></div></div>
+</section>
+<section id="calendar" class="panel">
+ <div class="card"><h2>Takvim</h2><label>Bir gün seç</label><input type="date" id="calendarDate"><div id="dayRecords" style="margin-top:12px"></div></div>
+ <div class="card"><h2>Geçmiş kayıtlar</h2><div id="history"></div></div>
+</section>
+<section id="reports" class="panel">
+ <div class="card"><h2>Raporlar</h2><div class="row"><div><label>Sınav türü</label><select id="reportExam"><option value="Hepsi">Hepsi</option><option>TYT</option><option>AYT</option><option>Genel</option></select></div><div><label>Ders</label><select id="reportSubject"><option value="Hepsi">Hepsi</option></select></div></div>
+ <div class="grid" style="margin-top:12px"><div class="stat"><strong id="rMinutes">0</strong><span>Toplam dakika</span></div><div class="stat"><strong id="rCorrect">0</strong><span>Doğru</span></div><div class="stat"><strong id="rWrong">0</strong><span>Yanlış</span></div><div class="stat"><strong id="rNet">0</strong><span>Net (D − Y/4)</span></div></div><div id="bySubject" style="margin-top:14px"></div></div>
+ <div class="card"><h2>Verilerini koru</h2><p class="muted">Kayıtlar bu cihazın tarayıcısında otomatik saklanır. Telefon değiştirirsen veya tarayıcı verilerini silersen yedek dosyasını kullan.</p><div class="actions"><button class="btn primary" id="export">Yedek indir</button><label class="btn" style="margin:0">Yedek yükle<input type="file" id="import" accept="application/json" hidden></label><button class="btn danger" id="clear">Tüm kayıtları sil</button></div></div>
+</section>
+</main>
+<script>
+const DEFAULT=["Matematik","Geometri","Türkçe","Paragraf","Problemler","Fizik","Kimya","Biyoloji","Tarih","Coğrafya","Felsefe","Din Kültürü","Edebiyat"];
+const KEY="yksTakipDataV1"; let data=load(); let selected=DEFAULT[0];
+function fresh(){return {records:[],topics:Object.fromEntries(DEFAULT.map(x=>[x,[]]))}}
+function load(){try{return JSON.parse(localStorage.getItem(KEY))||fresh()}catch{return fresh()}}
+function save(){localStorage.setItem(KEY,JSON.stringify(data));render()}
+function esc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function net(r){return (Number(r.correct||0)-Number(r.wrong||0)/4)}
+function weekStart(d){let x=new Date(d+"T12:00:00");let day=(x.getDay()+6)%7;x.setDate(x.getDate()-day);return x.toISOString().slice(0,10)}
+function fillSubjects(){let opts=DEFAULT.map(s=>`<option>${esc(s)}</option>`).join("");document.querySelector("#subject").innerHTML=opts;document.querySelector("#reportSubject").innerHTML='<option>Hepsi</option>'+opts}
+document.querySelectorAll("nav button").forEach(b=>b.onclick=()=>{document.querySelectorAll("nav button").forEach(x=>x.classList.toggle("active",x===b));document.querySelectorAll(".panel").forEach(x=>x.classList.toggle("active",x.id===b.dataset.tab));render()});
+document.querySelector("#date").value=new Date().toISOString().slice(0,10);document.querySelector("#calendarDate").value=document.querySelector("#date").value;
+document.querySelector("#studyForm").onsubmit=e=>{e.preventDefault();let r={id:Date.now(),date:date.value,exam:exam.value,subject:subject.value,topic:topic.value.trim(),minutes:+minutes.value||0,status:status.value,correct:+correct.value||0,wrong:+wrong.value||0,note:note.value};data.records.push(r);if(r.topic&&!data.topics[r.subject].includes(r.topic))data.topics[r.subject].push(r.topic);save();e.target.reset();date.value=new Date().toISOString().slice(0,10);minutes.value=40;correct.value=wrong.value=0;alert("Çalışma kaydedildi.");};
+function renderTopics(){let box=document.querySelector("#subjectButtons");box.innerHTML=DEFAULT.map(s=>`<button class="${s===selected?'active':''}" data-s="${esc(s)}">${esc(s)}</button>`).join("");box.querySelectorAll("button").forEach(b=>b.onclick=()=>{selected=b.dataset.s;renderTopics()});let ts=data.topics[selected]||[];let done=ts.filter(t=>data.records.some(r=>r.subject===selected&&r.topic===t&&r.status==="Bitti")).length;document.querySelector("#subjectDetail").innerHTML=`<h3>${esc(selected)} — ${done}/${ts.length} konu bitti</h3><div class="progress"><i style="width:${ts.length?done/ts.length*100:0}%"></i></div><div style="margin-top:10px">${ts.length?ts.map(t=>{let st=data.records.some(r=>r.subject===selected&&r.topic===t&&r.status==="Bitti");return `<div class="item"><span>${esc(t)}</span><span class="tag">${st?'Bitti':'Çalışılacak'}</span></div>`}).join(""):'Henüz konu eklemedin.'}</div>`}
+document.querySelector("#addTopic").onclick=()=>{let v=document.querySelector("#newTopic").value.trim();if(!v)return;if(!data.topics[selected])data.topics[selected]=[];if(!data.topics[selected].includes(v))data.topics[selected].push(v);document.querySelector("#newTopic").value="";save()};
+function recordHtml(r){return `<div class="item"><div><b>${esc(r.topic)}</b><small>${esc(r.date)} · ${esc(r.exam)} / ${esc(r.subject)} · ${r.minutes} dk · D:${r.correct} Y:${r.wrong} · ${esc(r.status)}</small>${r.note?`<small>${esc(r.note)}</small>`:""}</div><button class="btn danger" onclick="delRecord(${r.id})">Sil</button></div>`}
+window.delRecord=id=>{if(confirm("Bu kaydı silmek istiyor musun?")){data.records=data.records.filter(r=>r.id!==id);save()}};
+function render(){let rs=data.records,now=new Date(),today=now.toISOString().slice(0,10),ws=weekStart(today);let total=rs.reduce((a,r)=>a+r.minutes,0),week=rs.filter(r=>r.date>=ws).reduce((a,r)=>a+r.minutes,0);document.querySelector("#totalHours").textContent=(total/60).toFixed(1)+" sa";document.querySelector("#weekHours").textContent=(week/60).toFixed(1)+" sa";document.querySelector("#totalNet").textContent=rs.reduce((a,r)=>a+net(r),0).toFixed(2);let topics=Object.values(data.topics).flat();let done=topics.filter(t=>rs.some(r=>r.topic===t&&r.status==="Bitti")).length;document.querySelector("#doneTopics").textContent=done;document.querySelector("#goalBar").style.width=Math.min(100,week/1800*100)+"%";document.querySelector("#goalText").textContent=(week/60).toFixed(1)+" / 30 saat";document.querySelector("#recent").innerHTML=rs.length?rs.slice().sort((a,b)=>b.date.localeCompare(a.date)||b.id-a.id).slice(0,5).map(recordHtml).join(""):"Henüz kayıt yok. İlk çalışmanı ekleyebilirsin.";renderTopics();let d=document.querySelector("#calendarDate").value;let day=rs.filter(r=>r.date===d);document.querySelector("#dayRecords").innerHTML=day.length?day.map(recordHtml).join(""):"Bu gün için kayıt yok.";document.querySelector("#history").innerHTML=rs.length?rs.slice().sort((a,b)=>b.date.localeCompare(a.date)||b.id-a.id).map(recordHtml).join(""):"Geçmiş kayıt bulunmuyor.";renderReport();document.querySelector("#topicOptions").innerHTML=Object.values(data.topics).flat().map(t=>`<option value="${esc(t)}">`).join("")}
+function renderReport(){let ex=document.querySelector("#reportExam").value,sub=document.querySelector("#reportSubject").value;let rs=data.records.filter(r=>(ex==="Hepsi"||r.exam===ex)&&(sub==="Hepsi"||r.subject===sub));let sum=k=>rs.reduce((a,r)=>a+(+r[k]||0),0);document.querySelector("#rMinutes").textContent=sum("minutes");document.querySelector("#rCorrect").textContent=sum("correct");document.querySelector("#rWrong").textContent=sum("wrong");document.querySelector("#rNet").textContent=(sum("correct")-sum("wrong")/4).toFixed(2);let groups={};rs.forEach(r=>{groups[r.subject]=(groups[r.subject]||0)+r.minutes});document.querySelector("#bySubject").innerHTML="<h3>Derslere göre çalışma</h3>"+(Object.keys(groups).length?Object.entries(groups).sort((a,b)=>b[1]-a[1]).map(([s,m])=>`<div class="item"><span>${esc(s)}</span><b>${(m/60).toFixed(1)} saat</b></div>`).join(""):"Henüz veri yok.") }
+document.querySelector("#calendarDate").onchange=render;document.querySelector("#reportExam").onchange=renderReport;document.querySelector("#reportSubject").onchange=renderReport;
+document.querySelector("#export").onclick=()=>{let blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"}),a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="yks-takip-yedek.json";a.click();URL.revokeObjectURL(a.href)};
+document.querySelector("#import").onchange=e=>{let f=e.target.files[0];if(!f)return;let rd=new FileReader();rd.onload=()=>{try{let x=JSON.parse(rd.result);if(!Array.isArray(x.records)||!x.topics)throw 0;data=x;save();alert("Yedek yüklendi.")}catch{alert("Yedek dosyası okunamadı.")}};rd.readAsText(f)};
+document.querySelector("#clear").onclick=()=>{if(confirm("Bütün çalışma kayıtların ve konuların silinsin mi?")){data=fresh();save()}};
+fillSubjects();render();if("serviceWorker" in navigator)window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(()=>{}));
+</script></body></html>
